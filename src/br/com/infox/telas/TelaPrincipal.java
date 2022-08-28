@@ -194,7 +194,20 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void menRelServActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menRelServActionPerformed
-        // TODO add your handling code here:
+        //
+         int confirma = JOptionPane.showConfirmDialog(null, "Confirma a Emissão do Relaório?","Atenção", JOptionPane.YES_NO_OPTION);
+        if(confirma == JOptionPane.YES_OPTION){
+            //contruindo relatorio com  JasperReport
+            try {
+                // usando a Classe JasperPrint para preparar a impressão de um relatório
+                JasperPrint print = JasperFillManager.fillReport("d:/reports/servicos.jasper",null, conexao);
+                // a linha abaixo exibe o relatorio atrvés da classe JasperViewer
+                JasperViewer.viewReport(print, false);
+                
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
     }//GEN-LAST:event_menRelServActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated

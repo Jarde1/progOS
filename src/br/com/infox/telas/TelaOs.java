@@ -6,9 +6,13 @@ package br.com.infox.telas;
 
 import java.sql.*;
 import br.com.infox.dal.ModuloConexao;
+import java.util.HashMap;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -194,6 +198,25 @@ public class TelaOs extends javax.swing.JInternalFrame {
 
         }
     }
+    // Imprime uma OS
+    private void imprimir_os(){
+             int confirma = JOptionPane.showConfirmDialog(null, "Confirma a Impressão dessa OS ?","Atenção", JOptionPane.YES_NO_OPTION);
+        if(confirma == JOptionPane.YES_OPTION){
+            //imprimindo uma OS
+            try {
+                // Usando a classe RashMap para criar os filtros
+                HashMap filtro = new HashMap();
+                filtro.put("os", Integer.parseInt(txtOS.getText()));
+                // usando a Classe JasperPrint para preparar a impressão da Os
+                JasperPrint print = JasperFillManager.fillReport("d:/reports/os.jasper",filtro, conexao);
+                // a linha abaixo exibe o relatorio atrvés da classe JasperViewer
+                JasperViewer.viewReport(print, false);
+                
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+}
     
     private void apagar_Campos() {
         txtOsEquip.setText(null);
@@ -511,6 +534,11 @@ public class TelaOs extends javax.swing.JInternalFrame {
         btnOsImprimir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnOsImprimir.setEnabled(false);
         btnOsImprimir.setPreferredSize(new java.awt.Dimension(50, 50));
+        btnOsImprimir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOsImprimirActionPerformed(evt);
+            }
+        });
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton1.setText("Apagar");
@@ -664,6 +692,11 @@ public class TelaOs extends javax.swing.JInternalFrame {
         // exclui OS
         excluir_os();
     }//GEN-LAST:event_btnOsExcluirActionPerformed
+
+    private void btnOsImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsImprimirActionPerformed
+        // chama o metodo para imprimir uma os
+        imprimir_os();
+    }//GEN-LAST:event_btnOsImprimirActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
