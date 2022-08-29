@@ -1,15 +1,16 @@
-
 package br.com.infox.dal;
+
 import java.sql.*;
+
 /**
  *
  * @author JD_MAIN
  */
 public class ModuloConexao {
-    
+
     // responsavel por estabelecer a conexão com o banco
-    public static Connection conector(){
-        
+    public static Connection conector() {
+
         Connection conexao = null;
         // chama o driver mysql-Connector inportado de bibliotecas
         String driver = "com.mysql.cj.jdbc.Driver";
@@ -21,15 +22,15 @@ public class ModuloConexao {
         //String password = "3016127710";
         String password = "infox@123456";
         // estabelecento a conexão com o banco
-        try{
-            
+        try {
+
             Class.forName(driver);
             conexao = DriverManager.getConnection(url, user, password);
             return conexao;
-            
-        }catch(Exception e){
-            
+
+        } catch (Exception e) {
+
             return null;
         }
-    } 
+    }
 }

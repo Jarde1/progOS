@@ -73,7 +73,8 @@ public class TelaOs extends javax.swing.JInternalFrame {
                 int adicionado = pst.executeUpdate();
                 if(adicionado > 0){
                      JOptionPane.showMessageDialog(null, "OS Emitida com Sucesso");
-                     
+                     // recupera o numero da OS no campo de texto N°OS para poder imprimir OS
+                     recuperar_os();
                      btnOsAdicionar.setEnabled(false);
                      btnOsPesquisar.setEnabled(false);
                      btnOsImprimir.setEnabled(true);
@@ -86,12 +87,6 @@ public class TelaOs extends javax.swing.JInternalFrame {
         }
     }
     
-    private void setar_campos_cli(){
-        int set = tblClientes.getSelectedRow();
-        //tipo.setText(tblClientes.getModel().getValueAt(set, 1).toString());
-        //cboOsSit.setText(tblClientes.getModel().getValueAt(set, 1).toString());
-        
-    }
     // pesquisar uma OS
     private void pesquisar_os() {
         String num_os = JOptionPane.showInputDialog("Numero da OS");
@@ -217,7 +212,21 @@ public class TelaOs extends javax.swing.JInternalFrame {
             }
         }
 }
-    
+     // recupera o numero da OS no campo de texto N°OS para poder imprimir OS
+    private void recuperar_os(){
+        String sql = "select max(os) from tbos";
+        try {
+            pst = conexao.prepareStatement(sql);
+            rs = pst.executeQuery();
+            
+            if(rs.next()){
+                txtOS.setText(rs.getString(1));
+            }
+        } catch (Exception e) {
+            
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
     private void apagar_Campos() {
         txtOsEquip.setText(null);
         txtOsDefeito.setText(null);
