@@ -1,3 +1,27 @@
+
+/*
+ * The MIT License
+ *
+ * Copyright 2022 Jardel Ferreira.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 package br.com.infox.telas;
 
 import br.com.infox.dal.ModuloConexao;
@@ -9,19 +33,22 @@ import java.util.Locale;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
+
 /**
+ * Classe gerencia as demais telas do software, chamando-as via Menu: cadastro
+ * de usuarios, clientes, relatorios de clientes, e OS
  *
- * @author JD_MAIN
+ * @author Jardel Ferreira, Version 1.1
  */
 public class TelaPrincipal extends javax.swing.JFrame {
 
     Connection conexao = null;
+
     public TelaPrincipal() {
         initComponents();
         conexao = ModuloConexao.conector();
     }
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -192,85 +219,123 @@ public class TelaPrincipal extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Emite Relatorio com JasperReport
+     *
+     * @param evt
+     *
+     */
     private void menRelServActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menRelServActionPerformed
         //
-         int confirma = JOptionPane.showConfirmDialog(null, "Confirma a Emissão do Relaório?","Atenção", JOptionPane.YES_NO_OPTION);
-        if(confirma == JOptionPane.YES_OPTION){
+        int confirma = JOptionPane.showConfirmDialog(null, "Confirma a Emissão do Relaório?", "Atenção", JOptionPane.YES_NO_OPTION);
+        if (confirma == JOptionPane.YES_OPTION) {
             //contruindo relatorio com  JasperReport
             try {
                 // usando a Classe JasperPrint para preparar a impressão de um relatório
-                JasperPrint print = JasperFillManager.fillReport("d:/reports/servicos.jasper",null, conexao);
+                JasperPrint print = JasperFillManager.fillReport("d:/reports/servicos.jasper", null, conexao);
                 // a linha abaixo exibe o relatorio atrvés da classe JasperViewer
                 JasperViewer.viewReport(print, false);
-                
+
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e);
             }
         }
     }//GEN-LAST:event_menRelServActionPerformed
-
+    
+    /**
+     * Substitue a Label lblData pela data atual do sistema ao inicializar o form
+     * @param evt 
+     */
+    
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        // substituem a Label lblData pela data atual do
-        // sistema ao inicializar o form     
-        Date data = new Date(); 
+ 
+        Date data = new Date();
         DateFormat formatador = DateFormat.getDateInstance(DateFormat.SHORT);
         lblData.setText(formatador.format(data));
-        
-    }//GEN-LAST:event_formWindowActivated
 
+    }//GEN-LAST:event_formWindowActivated
+    
+    /**
+     * sai da aplicação
+     *
+     * @param evt
+     */
     private void menOpcSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menOpcSairActionPerformed
         // exibe uma caixa de dialogo
         int sair = JOptionPane.showConfirmDialog(null, "Tem serteza que deseja sair?", "Atenção", JOptionPane.YES_NO_OPTION);
-        if(sair == JOptionPane.YES_OPTION){
+        if (sair == JOptionPane.YES_OPTION) {
             System.exit(0);
         }
     }//GEN-LAST:event_menOpcSairActionPerformed
-
+    
+    /**
+     * Chama a tela sobre
+     *
+     * @param evt
+     */
     private void menAjudaSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menAjudaSobreActionPerformed
-        // chama a tela sobre
+
         TelaSobre sobre = new TelaSobre();
         sobre.setVisible(true);
     }//GEN-LAST:event_menAjudaSobreActionPerformed
-
+   
+    /**
+     * chama o form da class TelaUsuario dentro do desktopPane
+     *
+     * @param evt
+     */
     private void manCadUsuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manCadUsuActionPerformed
-        // abre o form TelaUsuario dentro do desktopPane
+
         TelaUsuario usuario = new TelaUsuario();
         usuario.setVisible(true);
         desktop.add(usuario);
     }//GEN-LAST:event_manCadUsuActionPerformed
-
+    
+    /**
+     * Chama tela Cliente
+     *
+     * @param evt
+     */
     private void menCadCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menCadCliActionPerformed
-        // chama tela Cliente
+
         TelaCliente telaCliente = new TelaCliente();
         telaCliente.setVisible(true);
         desktop.add(telaCliente);
     }//GEN-LAST:event_menCadCliActionPerformed
-
+    
+    /**
+     * Chama tela Os
+     *
+     * @param evt
+     */
     private void menCadOsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menCadOsActionPerformed
-        // chama tela Os
+
         TelaOs os = new TelaOs();
         os.setVisible(true);
         desktop.add(os);
     }//GEN-LAST:event_menCadOsActionPerformed
-
+    
+    /**
+     * Imprime relatório de clientes
+     *
+     * @param evt
+     */
     private void manRelCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manRelCliActionPerformed
         // gerenciandoum relatori de clientes
-        int confirma = JOptionPane.showConfirmDialog(null, "Confirma a impressão do Relaório?","Atenção", JOptionPane.YES_NO_OPTION);
-        if(confirma == JOptionPane.YES_OPTION){
+        int confirma = JOptionPane.showConfirmDialog(null, "Confirma a Impressão do Relaório?", "Atenção", JOptionPane.YES_NO_OPTION);
+        if (confirma == JOptionPane.YES_OPTION) {
             //contruindo relatorio com  JasperReport
             try {
                 // usando a Classe JasperPrint para preparar a impressão de um relatório
-                JasperPrint print = JasperFillManager.fillReport("d:/reports/clientes.jasper",null, conexao);
+                JasperPrint print = JasperFillManager.fillReport("d:/reports/clientes.jasper", null, conexao);
                 // a linha abaixo exibe o relatorio atrvés da classe JasperViewer
                 JasperViewer.viewReport(print, false);
-                
+
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e);
             }
         }
     }//GEN-LAST:event_manRelCliActionPerformed
-
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

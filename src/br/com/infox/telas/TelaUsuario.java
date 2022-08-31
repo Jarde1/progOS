@@ -1,42 +1,72 @@
-
+/*
+ * The MIT License
+ *
+ * Copyright 2022 Jardel Ferreira.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 package br.com.infox.telas;
+
 import java.sql.*;
 import br.com.infox.dal.ModuloConexao;
 import javax.swing.JOptionPane;
 
 /**
- * 
- * @author JD_MAIN
+ * Classe é responsável por alterar, adicionar, modificar e excluir dados de
+ * Usuarios que terão acesso total ou restrito na aplicação
+ *
+ * @author Jardel Ferreira, Version 1.1
  */
 public class TelaUsuario extends javax.swing.JInternalFrame {
-    
+
     Connection conexao = null;
     PreparedStatement pst = null;
     ResultSet rs = null;
-   
+
     public TelaUsuario() {
         initComponents();
         conexao = ModuloConexao.conector();
-        
+
     }
-    private void consultar(){
+
+    /**
+     * Método fáz consulta de dados de usuários na DB
+     *
+     */
+    private void consultar() {
         String sql = "select * from tbusuarios where iduser=?";
-        
-        try{
-            
+
+        try {
+
             pst = conexao.prepareStatement(sql);
             // substitui txtUsuID por 
             pst.setString(1, txtUsuID.getText());
             rs = pst.executeQuery();
-            if(rs.next()){
-                
+            if (rs.next()) {
+
                 txtUsuNome.setText(rs.getString(2));
                 txtUsuFone.setText(rs.getString(3));
                 txtUsuLogin.setText(rs.getString(4));
                 txtUsuSenha.setText(rs.getString(5));
                 cboUsuPerfil.setSelectedItem(rs.getString(6));// combobox
-                
-            }else{
+
+            } else {
                 JOptionPane.showMessageDialog(null, "Usuario não Cadastrado");
                 // limpa os campos
                 txtUsuNome.setText(null);
@@ -44,29 +74,32 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
                 txtUsuLogin.setText(null);
                 txtUsuSenha.setText(null);
                 //cboUsuPerfil.setSelectedItem(null);
-           }
-        }catch(Exception e){
-            
+            }
+        } catch (Exception e) {
+
             JOptionPane.showMessageDialog(null, e);
-            
-            
+
         }
     }
-    // adiciona Usuarios
-    private void adicionar(){
+
+    /**
+     * Método Adiciona Usuarios na DataBase
+     *
+     */
+    private void adicionar() {
         String sql = "insert into tbusuarios(iduser,usuario,fone,login,senha,perfil) values(?,?,?,?,?,?)";
-        
-        try{
-             pst = conexao.prepareStatement(sql);
-             pst.setString(1, txtUsuID.getText());
-             pst.setString(2, txtUsuNome.getText());
-             pst.setString(3, txtUsuFone.getText());
-             pst.setString(4, txtUsuLogin.getText());
-             pst.setString(5, txtUsuSenha.getText());
-             pst.setString(6, cboUsuPerfil.getSelectedItem().toString());
-             // validação dos campos obrigatorios
-             
-            if((txtUsuID.getText().isEmpty()) || (txtUsuNome.getText().isEmpty()) || (txtUsuLogin.getText().isEmpty())
+
+        try {
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, txtUsuID.getText());
+            pst.setString(2, txtUsuNome.getText());
+            pst.setString(3, txtUsuFone.getText());
+            pst.setString(4, txtUsuLogin.getText());
+            pst.setString(5, txtUsuSenha.getText());
+            pst.setString(6, cboUsuPerfil.getSelectedItem().toString());
+            // validação dos campos obrigatorios
+
+            if ((txtUsuID.getText().isEmpty()) || (txtUsuNome.getText().isEmpty()) || (txtUsuLogin.getText().isEmpty())
                     || (txtUsuSenha.getText().isEmpty())) {
                 JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatorios");
                 System.out.println("Preencha todos os itens");
@@ -93,8 +126,12 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         }
 
     }
-    
-    private void alterar(){
+
+    /**
+     * Método responsavel por fazer alteraçoes nos dados de usuarios
+     *
+     */
+    private void alterar() {
         String sql = "update tbusuarios set usuario=?,fone=?,login=?,senha=?,perfil=? where iduser=?";
         try {
             pst = conexao.prepareStatement(sql);
@@ -104,11 +141,11 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
             pst.setString(4, txtUsuSenha.getText());
             pst.setString(5, cboUsuPerfil.getSelectedItem().toString());
             pst.setString(6, txtUsuID.getText());
-            //
-             if((txtUsuID.getText().isEmpty()) || (txtUsuNome.getText().isEmpty()) || (txtUsuLogin.getText().isEmpty())
+            
+            if ((txtUsuID.getText().isEmpty()) || (txtUsuNome.getText().isEmpty()) || (txtUsuLogin.getText().isEmpty())
                     || (txtUsuSenha.getText().isEmpty())) {
                 JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatorios");
-               
+
             } else {
 
                 // a linha abaixo atualiza a tabela usuarios com os dados do formulario
@@ -124,51 +161,58 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
                     //cboUsuPerfil.setSelectedItem(null);
                 }
             }
-            
+
         } catch (Exception e) {
-              JOptionPane.showMessageDialog(null, e);
+            JOptionPane.showMessageDialog(null, e);
         }
     }
-    
-    // metodo deleta dados do usuarios
-    private void remover(){
-        
-        int confirma = JOptionPane.showConfirmDialog(null, "Tem sertesa que quer Remover o usuario ?","Atenção",JOptionPane.YES_NO_OPTION);
-        
-        if(confirma == JOptionPane.YES_OPTION){
+
+    /**
+     * Metodo deleta dados do usuarios
+     *
+     */
+    private void remover() {
+
+        int confirma = JOptionPane.showConfirmDialog(null, "Tem sertesa que quer Remover o usuario ?", "Atenção", JOptionPane.YES_NO_OPTION);
+
+        if (confirma == JOptionPane.YES_OPTION) {
             String sql = "delete from tbusuarios where iduser=?";
-            
+
             try {
                 pst = conexao.prepareStatement(sql);
                 pst.setString(1, txtUsuID.getText());
                 int apagado = pst.executeUpdate();
-                if(apagado > 0){
-                JOptionPane.showMessageDialog(null, "Usuário Removido com sucesso");
-                System.out.println("nao funcionou o if !!!!!");
-                
-                txtUsuID.setText(null);
-                txtUsuNome.setText(null);
-                txtUsuFone.setText(null);
-                txtUsuLogin.setText(null);
-                txtUsuSenha.setText(null);
-                //cboUsuPerfil.setSelectedItem(null);
+                if (apagado > 0) {
+                    JOptionPane.showMessageDialog(null, "Usuário Removido com sucesso");
+                    System.out.println("nao funcionou o if !!!!!");
+
+                    txtUsuID.setText(null);
+                    txtUsuNome.setText(null);
+                    txtUsuFone.setText(null);
+                    txtUsuLogin.setText(null);
+                    txtUsuSenha.setText(null);
+                    //cboUsuPerfil.setSelectedItem(null);
                 }
-        
+
             } catch (Exception e) {
-                  JOptionPane.showMessageDialog(null, e);
+                JOptionPane.showMessageDialog(null, e);
             }
         }
     }
-    private void apagar(){
-        
-         txtUsuID.setText(null);
-         txtUsuNome.setText(null);
-         txtUsuFone.setText(null);
-         txtUsuLogin.setText(null);
-         txtUsuSenha.setText(null);
+
+    /**
+     * Apaga campos de texto do form
+     * 
+     */
+    private void apagar() {
+
+        txtUsuID.setText(null);
+        txtUsuNome.setText(null);
+        txtUsuFone.setText(null);
+        txtUsuLogin.setText(null);
+        txtUsuSenha.setText(null);
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

@@ -1,6 +1,26 @@
+
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
+ * The MIT License
+ *
+ * Copyright 2022 Jardel Ferreira.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package br.com.infox.telas;
 
@@ -15,8 +35,9 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 
 /**
- *
- * @author JD_MAIN
+ * Classe responsavel por realizar Ordens de serviço, cadastro de clientes,
+ * alterações, exclusões e Impressão de relatorios de Ordens de Serviço
+ * @author Jardel Ferreira, Version 1.1
  */
 public class TelaOs extends javax.swing.JInternalFrame {
 
@@ -30,7 +51,9 @@ public class TelaOs extends javax.swing.JInternalFrame {
         initComponents();
         conexao = ModuloConexao.conector();
     }
-
+    /**
+     * Metodo Faz a pesquisa de Clientes no banco de dados
+     */
     private void pesquisar_Cliente() {
         String sql = "select idcli as Id, nomecli as Nome, fonecli as Fone from tbclientes where nomecli like ?";
 
@@ -44,12 +67,16 @@ public class TelaOs extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, e);
         }
     }
-    
+    /**
+     * seta Campos do DB com a tabela 
+     */
     private void setar_campos(){
         int setar = tblClientes.getSelectedRow();
         txtCliID.setText(tblClientes.getModel().getValueAt(setar, 0).toString());
     }
-    // cadastra OS
+    /**
+     * cadastra Ordem de serviço
+     */
     private void emitir_os(){
         String sql = "insert into tbos(tipo,situacao,equipamento,defeito,servico,tecnico,valor,idcli) values(?,?,?,?,?,?,?,?)";
         try {
@@ -87,7 +114,10 @@ public class TelaOs extends javax.swing.JInternalFrame {
         }
     }
     
-    // pesquisar uma OS
+    /**
+     * Método Realisa pesquisa de Ordem de Serviço  no DB
+     * 
+     */
     private void pesquisar_os() {
         String num_os = JOptionPane.showInputDialog("Numero da OS");
         String sql = "select os,date_format(data_os,'%d/%m/%Y - %H:%i'),"
@@ -137,6 +167,10 @@ public class TelaOs extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
     }
+    /**
+     * Método faz alteração de dados da Ordem de Serviço
+     * 
+     */
     private void alterar_os(){
         
         String sql = "update tbos set tipo=?,situacao=?,equipamento=?,defeito=?,servico=?,tecnico=?,valor=? where os=?";
@@ -171,7 +205,10 @@ public class TelaOs extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, e);
         }
     }
-    //exclui uma OS
+    /**
+     * Método Exclui uma Ordem de Serviço do DB
+     * 
+     */
     private void excluir_os() {
 
         int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir OS ?", "Atenção", JOptionPane.YES_NO_OPTION);
@@ -193,7 +230,10 @@ public class TelaOs extends javax.swing.JInternalFrame {
 
         }
     }
-    // Imprime uma OS
+    /**
+     * Método Imprime uma Ordem de Serviço
+     * 
+     */
     private void imprimir_os(){
              int confirma = JOptionPane.showConfirmDialog(null, "Confirma a Impressão dessa OS ?","Atenção", JOptionPane.YES_NO_OPTION);
         if(confirma == JOptionPane.YES_OPTION){
@@ -212,7 +252,11 @@ public class TelaOs extends javax.swing.JInternalFrame {
             }
         }
 }
-     // recupera o numero da OS no campo de texto N°OS para poder imprimir OS
+     /**
+      * Método Recupera o numero da OS no campo de texto N°OS
+      * para poder imprimir Ordem de Serviço
+      * 
+      */
     private void recuperar_os(){
         String sql = "select max(os) from tbos";
         try {
@@ -227,6 +271,10 @@ public class TelaOs extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, e);
         }
     }
+    /**
+     * Método para apagar campos do form
+     * 
+     */
     private void apagar_Campos() {
         txtOsEquip.setText(null);
         txtOsDefeito.setText(null);
