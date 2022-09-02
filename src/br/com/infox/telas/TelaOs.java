@@ -286,6 +286,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
         txtData.setText(null);
         btnOsAdicionar.setEnabled(true);
         btnOsPesquisar.setEnabled(true);
+        btnOsImprimir.setEnabled(false);
         txtCliPesquisar.setEnabled(true);
         txtCliPesquisar.setText(null);
         tblClientes.setVisible(true);
