@@ -232,7 +232,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
             //contruindo relatorio com  JasperReport
             try {
                 // usando a Classe JasperPrint para preparar a impressão de um relatório
-                JasperPrint print = JasperFillManager.fillReport("d:/reports/servicos.jasper", null, conexao);
+              // *** JasperPrint print = JasperFillManager.fillReport("d:/reports/servicos.jasper", null, conexao);
+              // linha acima foi substituida pela instrução abaixo: alterando o caminho para o relatorio Jasper
+              JasperPrint print = JasperFillManager.fillReport(getClass().getResourceAsStream("/reports/servicos.jasper"), null, conexao);
                 // a linha abaixo exibe o relatorio atrvés da classe JasperViewer
                 JasperViewer.viewReport(print, false);
 
@@ -327,7 +329,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
             //contruindo relatorio com  JasperReport
             try {
                 // usando a Classe JasperPrint para preparar a impressão de um relatório
-                JasperPrint print = JasperFillManager.fillReport("d:/reports/clientes.jasper", null, conexao);
+                //*** JasperPrint print = JasperFillManager.fillReport("d:/reports/clientes.jasper", null, conexao);
+                // linha acima foi substituida pela linha abaixo(mudando o caminho para o relatório jasper)
+                JasperPrint print = JasperFillManager.fillReport(getClass().getResourceAsStream("/reports/clientes.jasper"), null, conexao);
                 // a linha abaixo exibe o relatorio atrvés da classe JasperViewer
                 JasperViewer.viewReport(print, false);
 

@@ -243,7 +243,9 @@ public class TelaOs extends javax.swing.JInternalFrame {
                 HashMap filtro = new HashMap();
                 filtro.put("os", Integer.parseInt(txtOS.getText()));
                 // usando a Classe JasperPrint para preparar a impressão da Os
-                JasperPrint print = JasperFillManager.fillReport("d:/reports/os.jasper",filtro, conexao);
+            // *** JasperPrint print = JasperFillManager.fillReport("d:/reports/os.jasper",filtro, conexao);
+              // linha acima foi substituida pela linha abaixo alterando o caminho do relatório Jasper
+              JasperPrint print = JasperFillManager.fillReport(getClass().getResourceAsStream("/reports/os.jasper"), filtro, conexao);
                 // a linha abaixo exibe o relatorio atrvés da classe JasperViewer
                 JasperViewer.viewReport(print, false);
                 
