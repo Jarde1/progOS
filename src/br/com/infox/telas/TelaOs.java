@@ -472,7 +472,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
         txtCliID.setEnabled(false);
 
         tblClientes = new javax.swing.JTable(){
-            public boolean isCellIditable(int rowIndex, int colIndex){
+            public boolean isCellEditable(int rowIndex, int colIndex){
                 return false;
             }
         };
